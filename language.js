@@ -12,10 +12,9 @@ function parseExpression(code){
     }
     return parseApply(expr,code.slice(match[0].length));
 }
-function skipSpace(string){
-    let first = string.search(/\S/);
-    if(first == -1) return "";
-    return string.slice(first);
+function skipSpace(string) {
+  let skippable = string.match(/^(\s|#.*)*/);
+  return string.slice(skippable[0].length);
 }
 function parseApply(expr,code) {
     code=skipSpace(code);
@@ -147,3 +146,10 @@ specialForms.func = (args, scope) => {
 };
 
 run(`do(define(hello,func(a,+("hello ",a))),print(hello("Yugandhar")))`)
+
+topScope.array = (...values) => values;
+
+topScope.length = array => array.length;
+
+topScope.element = (array, i) => array[i];
+
